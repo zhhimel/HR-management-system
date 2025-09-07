@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/auth.routes";
 import attendanceRoutes from "./routes/attendance.routes";
-
+import reportsRoutes from "./routes/reports.routes";
 import employeeRoutes from "./routes/employee.routes";
 // import attendanceRoutes from "./routes/attendance.routes";
 // import { errorHandler } from "./middlewares/error.middleware";
@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-
+app.use("/api/reports", reportsRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
