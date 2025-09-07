@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import authRoutes from "./routes/auth.routes";
 import attendanceRoutes from "./routes/attendance.routes";
 
-// import employeeRoutes from "./routes/employee.routes";
+import employeeRoutes from "./routes/employee.routes";
 // import attendanceRoutes from "./routes/attendance.routes";
 // import { errorHandler } from "./middlewares/error.middleware";
 
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/auth", authRoutes);
-// app.use("/api/employees", employeeRoutes);
+app.use("/api/employees", employeeRoutes);
 // app.use("/api/attendance", attendanceRoutes);
 
 // // Error handler
