@@ -44,16 +44,28 @@ export const createOrUpdateAttendance = async (req: Request, res: Response) => {
 // List attendance with optional filters
 export const getAttendance = async (req: Request, res: Response) => {
   try {
-    const { employee_id, from, to } = req.query;
-
     let query = db("attendance").select("*");
 
-    if (employee_id) query = query.where("employee_id", Number(employee_id));
-    if (from) query = query.where("date", ">=", from);
-    if (to) query = query.where("date", "<=", to);
+    // Filters
+    if (req.query.employee_id) query = query.where("employee_id", Number(req.query.employee_id));
+    if (req.query.from) query = query.where("date", ">=", req.query.from);
+    if (req.query.to) query = query.where("date", "<=", req.query.to);
 
-    const data = await query.orderBy("date", "desc");
-    return res.status(200).json(data);
+    // Pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const data = await query.offset(offset).limit(limit).orderBy("date", "desc");
+    const totalResult = await db("attendance").count("* as count").first();
+    const total = totalResult?.count ?? 0;
+
+    return res.status(200).json({
+      data,
+      total,
+      page,
+      limit,
+    });
   } catch (err: any) {
     console.error(err);
     return res.status(500).json({ message: err.message });
